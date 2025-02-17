@@ -39,22 +39,22 @@ A web application for calculating and visualizing bowling scores, built with Nex
 - Spare bonus: Points from next roll
 - Tenth frame: Up to 3 rolls if strike or spare
 
-## Project structure
-bowling-calculator/
-   src/
-      app/
-         page.tsx
-      components/
-         Controls.tsx
-         ScoreBoard.tsx
-         StrikeConfetti.tsx
-      services/
-         bowlingService.ts
-      types/
-         index.ts
-   __tests__/
-      bowlingService.test.ts
-   package.json
+## Project Structure
+- bowling-calculator/
+  - src/
+    - app/
+      - page.tsx
+    - components/
+      - Controls.tsx
+      - ScoreBoard.tsx
+      - StrikeConfetti.tsx
+    - services/
+      - bowlingService.ts
+    - types/
+      - index.ts
+  - __tests__/
+    - bowlingService.test.ts
+  - package.json
 
 ## Acknowledgments
 - Built as a learning project for [MetaBytes]
