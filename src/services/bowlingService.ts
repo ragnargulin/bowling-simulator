@@ -29,31 +29,41 @@ export class BowlingService {
     }
 
     const frame = this.state.frames[this.state.currentFrame];
+    
+    // Validera att summan av slag i en frame inte överstiger 10 (förutom i sista framen)
+    if (this.state.currentFrame < 9 && 
+        frame.rolls.length === 1 && 
+        frame.rolls[0] + pins > 10) {
+      return this.state;
+    }
+
     frame.rolls.push(pins);
 
-    // Handle strike
-    if (pins === 10 && frame.rolls.length === 1 && this.state.currentFrame < 9) {
+    // Uppdatera frame status
+    if (frame.rolls.length === 1 && pins === 10) {
       frame.isStrike = true;
-      this.state.currentFrame++;
-      this.state.currentRoll = 0;
-    } 
-    // Handle normal frame completion
-    else if (frame.rolls.length === 2 || 
-            (frame.rolls.length === 1 && pins === 10 && this.state.currentFrame === 9)) {
-      frame.isSpare = !frame.isStrike && frame.rolls.reduce((a, b) => a + b, 0) === 10;
-      
-      if (this.state.currentFrame < 9) {
+    } else if (frame.rolls.length === 2 && frame.rolls[0] + frame.rolls[1] === 10) {
+      frame.isSpare = true;
+    }
+
+    // Hantera frame progression
+    if (this.state.currentFrame < 9) {
+      // För frames 1-9
+      if (frame.isStrike || frame.rolls.length === 2) {
         this.state.currentFrame++;
         this.state.currentRoll = 0;
-      } else if (this.state.currentFrame === 9) {
-        if (!frame.isStrike && !frame.isSpare) {
-          this.state.isGameComplete = true;
-        } else if (frame.rolls.length === 3) {
-          this.state.isGameComplete = true;
-        }
+      } else {
+        this.state.currentRoll++;
       }
     } else {
-      this.state.currentRoll++;
+      // För frame 10
+      if (!frame.isStrike && !frame.isSpare && frame.rolls.length === 2) {
+        this.state.isGameComplete = true;
+      } else if ((frame.isStrike || frame.isSpare) && frame.rolls.length === 3) {
+        this.state.isGameComplete = true;
+      } else {
+        this.state.currentRoll++;
+      }
     }
 
     this.calculateScore();
@@ -70,17 +80,23 @@ export class BowlingService {
 
       let frameScore = frame.rolls.reduce((a, b) => a + b, 0);
 
-      if (frame.isStrike && i < 9) {
-        if (nextFrame?.rolls[0] !== undefined) {
-          frameScore += nextFrame.rolls[0];
-          if (nextFrame.isStrike && followingFrame?.rolls[0] !== undefined) {
-            frameScore += followingFrame.rolls[0];
-          } else if (nextFrame.rolls[1] !== undefined) {
-            frameScore += nextFrame.rolls[1];
+      // Beräkna bonus för frames 1-9
+      if (i < 9) {
+        if (frame.isStrike) {
+          // Strike bonus
+          if (nextFrame?.rolls[0] !== undefined) {
+            frameScore += nextFrame.rolls[0];
+            if (nextFrame.isStrike && i < 8) {
+              // Om nästa slag också är en strike
+              if (followingFrame?.rolls[0] !== undefined) {
+                frameScore += followingFrame.rolls[0];
+              }
+            } else if (nextFrame.rolls[1] !== undefined) {
+              frameScore += nextFrame.rolls[1];
+            }
           }
-        }
-      } else if (frame.isSpare && i < 9) {
-        if (nextFrame?.rolls[0] !== undefined) {
+        } else if (frame.isSpare && nextFrame?.rolls[0] !== undefined) {
+          // Spare bonus
           frameScore += nextFrame.rolls[0];
         }
       }
