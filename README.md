@@ -40,39 +40,21 @@ A web application for calculating and visualizing bowling scores, built with Nex
 - Tenth frame: Up to 3 rolls if strike or spare
 
 ## Project structure
-Directory structure:
-└── ragnargulin-bowling-simulator/
-    ├── README.md
-    ├── eslint.config.mjs
-    ├── jest.config.js
-    ├── jest.setup.js
-    ├── next.config.ts
-    ├── package.json
-    ├── postcss.config.js
-    ├── postcss.config.mjs
-    ├── tailwind.config.js
-    ├── tailwind.config.ts
-    ├── tsconfig.json
-    ├── public/
-    └── src/
-        ├── __tests__/
-        │   └── bowlingService.test.ts
-        ├── app/
-        │   ├── globals.css
-        │   ├── layout.tsx
-        │   ├── page.tsx
-        │   └── api/
-        │       └── bowl/
-        │           └── route.ts
-        ├── components/
-        │   ├── BowlingFrame.tsx
-        │   ├── Controls.tsx
-        │   ├── ScoreBoard.tsx
-        │   └── StrikeConfetti.tsx
-        ├── services/
-        │   └── bowlingService.ts
-        └── types/
-            └── index.ts
+bowling-calculator/
+   src/
+      app/
+         page.tsx
+      components/
+         Controls.tsx
+         ScoreBoard.tsx
+         StrikeConfetti.tsx
+      services/
+         bowlingService.ts
+      types/
+         index.ts
+   __tests__/
+      bowlingService.test.ts
+   package.json
 
 ## Acknowledgments
 - Built as a learning project for [MetaBytes]
