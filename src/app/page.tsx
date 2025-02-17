@@ -60,6 +60,7 @@ export default function Home() {
         remainingPins={getCurrentFrameRemainingPins()}
         isFirstRoll={gameState.frames[gameState.currentFrame]?.rolls.length === 0}
         currentFrame={gameState.currentFrame}
+        gameState={gameState} 
       />
     </main>
   );
